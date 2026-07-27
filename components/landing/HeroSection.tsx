@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import LiquidShape from "./LiquidShape";
@@ -73,12 +73,18 @@ export default function HeroSection() {
         {/* Bottom Section */}
         <div className="flex justify-between items-end pointer-events-auto w-full">
           {/* Bottom Left Links/Stats */}
-          <div className="flex flex-col gap-4 font-heading text-xs md:text-sm uppercase tracking-[0.3em] text-white">
-            <a href="#initiatives" className="flex items-center gap-4 hover:text-white/60 transition-colors group">
-              <span className="w-8 md:w-12 h-[1px] bg-white group-hover:w-16 transition-all duration-300"></span> 30+ INITIATIVES
+          <div className="flex flex-col gap-3 font-heading text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em]">
+            <a href="#about" className="flex items-center justify-between w-[260px] text-white/70 hover:text-[#121212] hover:bg-white border border-white/20 transition-all duration-300 group cursor-pointer py-3 px-5">
+              <span className="font-medium">ABOUT US</span>
+              <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
             </a>
-            <a href="#events" className="flex items-center gap-4 hover:text-white/60 transition-colors group">
-              <span className="w-8 md:w-12 h-[1px] bg-white group-hover:w-16 transition-all duration-300"></span> UPCOMING EVENTS
+            <a href="#events" className="flex items-center justify-between w-[260px] text-white/70 hover:text-[#121212] hover:bg-white border border-white/20 transition-all duration-300 group cursor-pointer py-3 px-5">
+              <span className="font-medium">UPCOMING EVENTS</span>
+              <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+            </a>
+            <a href="#budget" className="flex items-center justify-between w-[260px] text-white/70 hover:text-[#121212] hover:bg-white border border-white/20 transition-all duration-300 group cursor-pointer py-3 px-5">
+              <span className="font-medium">BUDGET & TRANSPARENCY</span>
+              <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
             </a>
           </div>
 
@@ -108,14 +114,18 @@ export default function HeroSection() {
           <button className="absolute top-8 right-8 text-white" onClick={() => setMenuOpen(false)}>
             <X className="w-8 h-8" />
           </button>
-          {["About", "Initiatives", "Events", "Contact"].map((l) => (
+          {[
+            { name: "About Us", href: "#about" },
+            { name: "Upcoming Events", href: "#events" },
+            { name: "Budget", href: "#budget" }
+          ].map((item) => (
             <a
-              key={l}
-              href={`#${l.toLowerCase()}`}
+              key={item.name}
+              href={item.href}
               className="text-4xl font-display font-light uppercase tracking-[0.2em] text-white hover:text-white/50 transition-colors"
               onClick={() => setMenuOpen(false)}
             >
-              {l}
+              {item.name}
             </a>
           ))}
         </motion.div>

@@ -1,0 +1,81 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const navItems = [
+  { id: "01", name: "ABOUT", href: "#about" },
+  { id: "02", name: "EVENTS", href: "#events" },
+  { id: "03", name: "BUDGET", href: "#budget" },
+];
+
+export default function SideNav() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+      
+      // Super basic scroll spy
+      const sections = navItems.map(item => item.href.substring(1));
+      let current = "";
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element && window.scrollY >= (element.offsetTop - 300)) {
+          current = section;
+        }
+      }
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {isScrolled && (
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 20 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="fixed right-6 md:right-10 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-6 pointer-events-none"
+        >
+          {navItems.map((item) => {
+            const isActive = activeSection === item.href.substring(1);
+            return (
+              <a
+                key={item.id}
+                href={item.href}
+                className="group pointer-events-auto flex items-center justify-end gap-4"
+              >
+                {/* Text that slides in on hover */}
+                <div className="flex flex-col items-end opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                  <span className="text-[9px] font-heading tracking-[0.4em] text-white/40 uppercase">sec // {item.id}</span>
+                  <span className="text-xs font-heading tracking-[0.2em] font-medium text-white">{item.name}</span>
+                </div>
+                
+                {/* The Box */}
+                <div className={`w-10 h-10 flex items-center justify-center border transition-all duration-300 backdrop-blur-md ${
+                  isActive 
+                    ? "bg-white border-white text-[#121212]" 
+                    : "bg-[#121212]/50 border-white/20 text-white/70 group-hover:bg-white group-hover:border-white group-hover:text-[#121212]"
+                }`}>
+                  <span className="font-heading text-[10px] tracking-widest font-bold">
+                    {item.id}
+                  </span>
+                </div>
+              </a>
+            );
+          })}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
