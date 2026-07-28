@@ -5,6 +5,7 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import LiquidShape from "./LiquidShape";
+import { upcomingEvents } from "@/lib/data/events";
 
 export default function HeroSection() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -144,6 +145,29 @@ export default function HeroSection() {
             </a>
           ))}
         </motion.div>
+      )}
+
+      {/* Latest Event Marquee */}
+      {upcomingEvents.length > 0 && (
+        <div className="absolute bottom-0 left-0 w-full z-20 border-t border-white/10 bg-[#121212]/80 backdrop-blur-md overflow-hidden flex items-center py-2 md:py-3 pointer-events-auto group">
+          <a href="#events" className="flex whitespace-nowrap items-center text-xs md:text-sm font-heading tracking-[0.2em] uppercase text-white/70 group-hover:text-white transition-colors w-max hover:cursor-pointer">
+            <motion.div
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ ease: "linear", duration: 25, repeat: Infinity }}
+              className="flex items-center"
+            >
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="flex items-center">
+                  <span className="w-2 h-2 bg-white rounded-full mx-6 md:mx-8 animate-pulse" />
+                  <span className="font-bold mr-3 text-white">LATEST EVENT:</span>
+                  <span>{upcomingEvents[0].title}</span>
+                  <span className="mx-3">—</span>
+                  <span>{upcomingEvents[0].date} @ {upcomingEvents[0].location}</span>
+                </div>
+              ))}
+            </motion.div>
+          </a>
+        </div>
       )}
 
     </div>
