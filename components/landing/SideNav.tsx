@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { id: "01", name: "ABOUT", href: "#about" },
-  { id: "02", name: "EVENTS", href: "#events" },
-  { id: "03", name: "BUDGET", href: "#budget" },
+  { id: "01", name: "HOME", href: "#home" },
+  { id: "02", name: "ABOUT", href: "#about" },
+  { id: "03", name: "EVENTS", href: "#events" },
+  { id: "04", name: "BUDGET", href: "#budget" },
 ];
 
 export default function SideNav() {
@@ -14,26 +15,35 @@ export default function SideNav() {
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          setIsScrolled(scrollY > 300);
+          
+          // Super basic scroll spy
+          let current = "";
+          for (const item of navItems) {
+            const section = item.href.substring(1);
+            const element = document.getElementById(section);
+            if (element && scrollY >= (element.offsetTop - 300)) {
+              current = section;
+            }
+          }
+          setActiveSection(current);
+          ticking = false;
+        });
+        ticking = true;
       }
-      
-      // Super basic scroll spy
-      const sections = navItems.map(item => item.href.substring(1));
-      let current = "";
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element && window.scrollY >= (element.offsetTop - 300)) {
-          current = section;
-        }
-      }
-      setActiveSection(current);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    // Initial check on mount
+    handleScroll();
+    
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

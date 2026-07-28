@@ -10,7 +10,7 @@ export default function HeroSection() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="bg-[#121212] min-h-screen w-full relative overflow-hidden font-sans text-white flex flex-col">
+    <div id="home" className="bg-[#121212] min-h-screen w-full relative overflow-hidden font-sans text-white flex flex-col">
       
       {/* 3D Immersive Background */}
       <div className="absolute inset-0 z-0">
@@ -21,7 +21,12 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-10 p-6 md:p-12 lg:p-16 flex flex-col justify-between pointer-events-none">
         
         {/* Top Header */}
-        <div className="flex justify-between items-start pointer-events-auto w-full">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="flex justify-between items-start pointer-events-auto w-full"
+        >
           {/* Main Title Area */}
           <div className="flex flex-col">
             <h1 className="text-[clamp(3rem,8vw,8rem)] font-display font-light tracking-[0.15em] leading-[0.9] uppercase text-white">
@@ -55,10 +60,15 @@ export default function HeroSection() {
           <button className="md:hidden text-white pointer-events-auto" onClick={() => setMenuOpen(!menuOpen)}>
              <Menu className="w-8 h-8" />
           </button>
-        </div>
+        </motion.div>
 
         {/* Middle Section */}
-        <div className="flex flex-col mt-auto mb-16 md:mb-24 md:max-w-md pointer-events-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col mt-auto mb-16 md:mb-24 md:max-w-md pointer-events-auto"
+        >
           <div className="text-xl md:text-2xl font-light text-white/80 mb-4 md:mb-6 font-heading tracking-wider">
             \\ 01
           </div>
@@ -68,10 +78,15 @@ export default function HeroSection() {
           <p className="text-xs md:text-sm text-white/70 leading-relaxed font-sans max-w-[280px] md:max-w-sm">
             A premier organization dedicated to fostering innovation, technical excellence, and a collaborative community among students. We provide resources, workshops, and opportunities to build the future of technology together.
           </p>
-        </div>
+        </motion.div>
 
         {/* Bottom Section */}
-        <div className="flex justify-between items-end pointer-events-auto w-full">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex justify-between items-end pointer-events-auto w-full"
+        >
           {/* Bottom Left Links/Stats */}
           <div className="flex flex-col gap-3 font-heading text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em]">
             <a href="#about" className="flex items-center justify-between w-[260px] text-white/70 hover:text-[#121212] hover:bg-white border border-white/20 transition-all duration-300 group cursor-pointer py-3 px-5">
@@ -100,7 +115,7 @@ export default function HeroSection() {
               <span>SOC</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
       </div>
       

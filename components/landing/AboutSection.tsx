@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 // About Section component for rendering organizational details.
 
 const executiveTeam = [
@@ -20,7 +24,13 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto flex flex-col gap-24">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8"
+        >
           <div>
             <div className="text-xl md:text-2xl font-light text-white/80 mb-4 font-heading tracking-wider">
               \\ 02
@@ -32,36 +42,61 @@ export default function AboutSection() {
           <p className="text-sm md:text-base text-white/70 leading-relaxed font-sans max-w-md">
             We are the driving force behind the college&apos;s technological advancement, uniting passionate minds to build a smarter future.
           </p>
-        </div>
+        </motion.div>
 
         {/* Mission & Vision */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          <div className="flex flex-col gap-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col gap-6"
+          >
             <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
               Mission
             </h3>
             <p className="text-sm md:text-base text-white/60 leading-relaxed font-sans">
               To empower students with cutting-edge technical skills, foster a culture of continuous learning, and provide a platform for collaborative innovation that addresses real-world challenges.
             </p>
-          </div>
-          <div className="flex flex-col gap-6">
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col gap-6"
+          >
             <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
               Vision
             </h3>
             <p className="text-sm md:text-base text-white/60 leading-relaxed font-sans">
               To be the premier recognized student organization that cultivates the next generation of tech leaders, renowned for excellence, creativity, and impactful technological solutions.
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* Core Values */}
-        <div className="flex flex-col gap-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-12"
+        >
           <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
             Core Values
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {coreValues.map((value, index) => (
-              <div key={index} className="flex flex-col gap-4 group">
+              <motion.div 
+                key={index} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-col gap-4 group"
+              >
                 <div className="text-3xl md:text-4xl text-white/20 group-hover:text-white transition-colors duration-500 font-heading font-light">
                   0{index + 1}
                 </div>
@@ -69,13 +104,19 @@ export default function AboutSection() {
                   {value}
                 </div>
                 <div className="w-full h-[1px] bg-white/10 group-hover:bg-white/50 transition-colors duration-500"></div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Executive Team */}
-        <div className="flex flex-col gap-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-12"
+        >
           <div className="flex justify-between items-end">
             <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
               Executive Team
@@ -86,17 +127,24 @@ export default function AboutSection() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {executiveTeam.map((member, index) => (
-              <div key={index} className="flex flex-col gap-3 p-6 border border-white/10 hover:border-white/30 transition-colors bg-white/[0.02]">
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-col gap-3 p-6 border border-white/10 hover:border-white/30 transition-colors bg-white/[0.02]"
+              >
                 <div className="text-xs uppercase tracking-[0.3em] text-white/50 font-heading font-bold">
                   {member.role}
                 </div>
                 <div className="text-xl font-display uppercase tracking-[0.1em] text-white">
                   {member.name}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>

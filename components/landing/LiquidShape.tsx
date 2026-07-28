@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, Suspense } from "react";
+import { useRef, Suspense, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useInView, motion } from "framer-motion";
 import { Environment, Float } from "@react-three/drei";
 import * as THREE from "three";
 import { EffectComposer, Bloom, Noise } from "@react-three/postprocessing";
@@ -10,7 +11,7 @@ import { BlendFunction } from "postprocessing";
 function FluidRings() {
   const { viewport } = useThree();
   const groupRef = useRef<THREE.Group>(null);
-  
+
   // Adjust position and scale based on viewport width
   const isMobile = viewport.width < 5;
   const position: [number, number, number] = isMobile ? [1, 2, 0] : [viewport.width * 0.3, 0, 0];
@@ -27,7 +28,7 @@ function FluidRings() {
     <group ref={groupRef} position={position} scale={scale}>
       <Float speed={1.5} rotationIntensity={1} floatIntensity={1}>
         <mesh position={[0, 0, 0]} rotation={[0, 0, 0]}>
-          <torusGeometry args={[2.5, 0.8, 128, 256]} />
+          <torusGeometry args={[2.5, 0.8, 32, 64]} />
           <meshStandardMaterial
             color="#555555"
             metalness={1}
@@ -38,7 +39,7 @@ function FluidRings() {
       </Float>
       <Float speed={2} rotationIntensity={1.5} floatIntensity={1.5}>
         <mesh position={[-1, -1.5, 1]} rotation={[Math.PI / 2, Math.PI / 4, 0]}>
-          <torusGeometry args={[2, 0.7, 128, 256]} />
+          <torusGeometry args={[2, 0.7, 32, 64]} />
           <meshStandardMaterial
             color="#444444"
             metalness={1}
@@ -52,23 +53,46 @@ function FluidRings() {
 }
 
 export default function LiquidShape() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "200px" });
+  const [isReady, setIsReady] = useState(false);
+
   return (
-    <div className="w-full h-full relative z-0 bg-transparent pointer-events-none">
-      <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ antialias: true }}>
+    <div ref={containerRef} className="w-full h-full relative z-0 bg-transparent pointer-events-none">
+      <motion.div
+        initial={{ opacity: 0, scale: 1.05 }}
+        animate={{ opacity: isReady ? 1 : 0, scale: isReady ? 1 : 1.05 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+        className="w-full h-full"
+      >
+        <Canvas 
+        camera={{ position: [0, 0, 10], fov: 45 }} 
+        gl={{ antialias: true }}
+        frameloop={isInView ? "always" : "demand"}
+      >
         <ambientLight intensity={0.2} />
         <directionalLight position={[10, 10, 5]} intensity={0.8} color="#ffffff" />
         <directionalLight position={[-10, -10, -5]} intensity={0.3} color="#ffffff" />
-        
+
         <Suspense fallback={null}>
           <Environment preset="studio" />
           <FluidRings />
-          
+
           <EffectComposer>
             <Bloom luminanceThreshold={0.8} mipmapBlur intensity={0.3} />
             <Noise opacity={0.03} blendFunction={BlendFunction.OVERLAY} />
           </EffectComposer>
+          <ReadyReporter onReady={() => setIsReady(true)} />
         </Suspense>
       </Canvas>
+      </motion.div>
     </div>
   );
+}
+
+function ReadyReporter({ onReady }: { onReady: () => void }) {
+  useEffect(() => {
+    onReady();
+  }, [onReady]);
+  return null;
 }

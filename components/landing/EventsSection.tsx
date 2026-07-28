@@ -1,35 +1,122 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
-const upcomingEvents = [
+type BaseEvent = {
+  id: string;
+  date: string;
+  title: string;
+  location?: string;
+  time?: string;
+};
+
+type UpcomingEvent = BaseEvent & {
+  type: 'upcoming';
+  description: string;
+  coverImage?: string;
+};
+
+type GalleryEvent = BaseEvent & {
+  type: 'gallery';
+  subtitle: string;
+  coverImage: string;
+  images: string[];
+};
+
+type ModalEvent = UpcomingEvent | GalleryEvent;
+
+const upcomingEvents: UpcomingEvent[] = [
   {
-    date: "OCT 15",
-    title: "Tech Horizon Summit 2026",
-    location: "Main Auditorium",
-    time: "09:00 AM - 05:00 PM"
+    id: "brigada-eskwela",
+    date: "JUL 27",
+    title: "Call for Volunteers",
+    location: "CCS 6th Floor",
+    time: "8:00 AM - 12:00 NN",
+    description: "Got an extra hour? We've got a mission for you!\n\nThis Brigada Eskwela 2026, let's go beyond the screen and give back to our CCS community. Join us as we clean, organize, and prepare the College of Computer Studies for the upcoming academic year. Every helping hand counts, and even the smallest effort can make a big difference.\n\nNo experience? No problem! Just bring your energy, willingness to help, and a heart to serve. Whether you can stay for an hour or the entire activity, we'd be happy to have you with us.\n\nPlease bring your own cleaning materials (such as a broom, dustpan, rug, or any cleaning supplies you can share) to help make our clean-up more effective.\n\nLet's work together to create a clean, welcoming, and inspiring space for everyone. See you at Brigada Eskwela!",
+    coverImage: "/events/brigada/brigada.jpg",
+    type: 'upcoming'
   },
   {
-    date: "NOV 02",
-    title: "HackTheFuture 48h Hackathon",
-    location: "Innovation Hub",
-    time: "Starts at 6:00 PM"
+    id: "locker-clearance",
+    date: "JUL 27-30",
+    title: "Locker Clearance",
+    location: "CCS Campus Lockers",
+    time: "All Day",
+    description: "Attention, CCS Nation!\n\nIf you occupied a locker during the previous academic year, please remember to clear out all your belongings from July 27–30, 2026 (Monday–Thursday).\n\nLet's keep our lockers ready for the new academic year. Thank you for your cooperation!",
+    coverImage: "/events/locker-clearance/locker-clearance.jpg",
+    type: 'upcoming'
   },
   {
-    date: "NOV 20",
-    title: "AI & Ethics Panel Discussion",
-    location: "Virtual Event",
-    time: "02:00 PM - 04:00 PM"
+    id: "freshmen-walk",
+    date: "AUG 3-4",
+    title: "Freshmen Walk",
+    location: "PLP Auditorium / Façade",
+    time: "8:00 AM",
+    description: "CCS NATION, ATTENTION!\n\nOfficially welcome the newest members of the CCS community as they take their first steps into college life through the Freshmen Walk, and celebrate the start of Academic Year 2026-2027!\n\nDAY 1 (August 3, 2026)\n- Time: 8:00 AM - 12:00 NN\n- Venue: PLP Auditorium, 8th Floor\n\nDAY 2 (August 4, 2026)\n- Time: 8:00 AM\n- Assembly Area: PLP Façade",
+    coverImage: "/events/freshmen-walk/freshmen-walk.jpg",
+    type: 'upcoming'
+  }
+];
+
+const galleryEvents: GalleryEvent[] = [
+  {
+    id: "maxwell",
+    date: "July 20, 2026",
+    title: "Maxwell",
+    subtitle: "Participants gathered at the Maxwell Pasig Next Gen Leadership Camp for inspiring sessions on purpose-driven and servant leadership.",
+    coverImage: "/events/maxwell/maxwell-pasig-01.jpg",
+    images: Array.from({ length: 10 }).map((_, i) => `/events/maxwell/maxwell-pasig-${String(i + 1).padStart(2, '0')}.jpg`),
+    type: 'gallery'
+  },
+  {
+    id: "oath-taking",
+    date: "July 08, 2026",
+    title: "Oath Taking",
+    subtitle: "The official induction ceremony for the newly elected officers and student leaders.",
+    coverImage: "/events/oath-taking/oath-taking-01.jpg",
+    images: ["01", "02", "04", "05"].map(n => `/events/oath-taking/oath-taking-${n}.jpg`),
+    type: 'gallery'
+  },
+  {
+    id: "ccs-sso",
+    date: "July 15, 2026",
+    title: "CCS SSO",
+    subtitle: "Computer Society deliberation at the Student Success Office with newly appointed appointees.",
+    coverImage: "/events/ccs-sso/ccs-sso.jpg",
+    images: ["/events/ccs-sso/ccs-sso.jpg"],
+    type: 'gallery'
   }
 ];
 
 export default function EventsSection() {
+  const [selectedEvent, setSelectedEvent] = useState<ModalEvent | null>(null);
+
+  useEffect(() => {
+    if (selectedEvent) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedEvent]);
+
   return (
-    <section id="events" className="bg-[#121212] w-full relative overflow-hidden font-sans text-white py-24 px-6 md:px-12 lg:px-16 border-t border-white/10">
-      <div className="max-w-7xl mx-auto flex flex-col gap-24">
-        
+    <section id="events" className="bg-[#121212] w-full relative font-sans text-white py-24 px-6 md:px-12 lg:px-16 border-t border-white/10">
+      <div className="max-w-7xl mx-auto flex flex-col gap-24 relative z-10">
+
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8"
+        >
           <div>
             <div className="text-xl md:text-2xl font-light text-white/80 mb-4 font-heading tracking-wider">
               \\ 03
@@ -41,10 +128,16 @@ export default function EventsSection() {
           <p className="text-sm md:text-base text-white/70 leading-relaxed font-sans max-w-md">
             Discover our latest gatherings, from competitive hackathons to insightful technical summits, designed to elevate your skills.
           </p>
-        </div>
+        </motion.div>
 
         {/* Upcoming Events */}
-        <div className="flex flex-col gap-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-12"
+        >
           <div className="flex justify-between items-end">
             <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
               Upcoming Events
@@ -53,11 +146,17 @@ export default function EventsSection() {
               ✦ ✦ ✦
             </div>
           </div>
-          
+
           <div className="flex flex-col border-t border-white/10">
             {upcomingEvents.map((event, index) => (
-              <div 
-                key={index} 
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                key={event.id}
+                layoutId={`event-card-${event.id}`}
+                onClick={() => setSelectedEvent(event)}
                 className="group flex flex-col md:flex-row justify-between items-start md:items-center py-8 border-b border-white/10 hover:bg-white/[0.02] transition-colors duration-300 px-4 md:px-8 cursor-pointer"
               >
                 <div className="flex flex-col md:flex-row gap-4 md:gap-16 items-start md:items-center mb-4 md:mb-0">
@@ -75,69 +174,186 @@ export default function EventsSection() {
                 </div>
                 <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all duration-300 shrink-0">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 13L13 1M13 1H3.4M13 1V10.6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M1 13L13 1M13 1H3.4M13 1V10.6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Event Gallery */}
-        <div className="flex flex-col gap-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-12"
+        >
           <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
             Event Gallery
           </h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Gallery Image 1 */}
-            <div className="group relative aspect-[4/3] overflow-hidden border border-white/10">
-              <Image 
-                src="/events/gallery_1.png" 
-                alt="Hackathon Event" 
-                fill 
-                className="object-cover transform group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100 grayscale-[20%] group-hover:grayscale-0"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent opacity-60"></div>
-              <div className="absolute bottom-6 left-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                <div className="text-xs uppercase tracking-[0.2em] text-white/70 font-heading mb-1">2025</div>
-                <div className="text-lg font-display uppercase tracking-wide text-white">Spring Hackathon</div>
-              </div>
-            </div>
-
-            {/* Gallery Image 2 */}
-            <div className="group relative aspect-[4/3] overflow-hidden border border-white/10 lg:translate-y-8">
-              <Image 
-                src="/events/gallery_2.png" 
-                alt="Tech Conference" 
-                fill 
-                className="object-cover transform group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100 grayscale-[20%] group-hover:grayscale-0"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent opacity-60"></div>
-              <div className="absolute bottom-6 left-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                <div className="text-xs uppercase tracking-[0.2em] text-white/70 font-heading mb-1">2025</div>
-                <div className="text-lg font-display uppercase tracking-wide text-white">Innovation Summit</div>
-              </div>
-            </div>
-
-            {/* Gallery Image 3 */}
-            <div className="group relative aspect-[4/3] overflow-hidden border border-white/10">
-              <Image 
-                src="/events/gallery_3.png" 
-                alt="Robotics Workshop" 
-                fill 
-                className="object-cover transform group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100 grayscale-[20%] group-hover:grayscale-0"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent opacity-60"></div>
-              <div className="absolute bottom-6 left-6 right-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                <div className="text-xs uppercase tracking-[0.2em] text-white/70 font-heading mb-1">2026</div>
-                <div className="text-lg font-display uppercase tracking-wide text-white">Robotics Workshop</div>
-              </div>
-            </div>
+            {galleryEvents.map((event, i) => (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                layoutId={`event-card-${event.id}`}
+                key={event.id}
+                onClick={() => setSelectedEvent(event)}
+                className={`group relative aspect-square overflow-hidden border border-white/10 cursor-pointer ${i === 1 ? 'lg:translate-y-8' : ''}`}
+              >
+                <motion.div layoutId={`event-image-${event.id}`} className="absolute inset-0 w-full h-full bg-[#121212]">
+                  <div className="absolute inset-0 z-0">
+                    <Image src={event.coverImage} alt="" fill className="object-cover blur-2xl opacity-40 scale-110" />
+                  </div>
+                  <Image
+                    src={event.coverImage}
+                    alt={event.title}
+                    fill
+                    className="object-cover relative z-10 transform group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100 grayscale-[20%] group-hover:grayscale-0"
+                  />
+                </motion.div>
+                <div className="absolute inset-0 z-20 bg-gradient-to-t from-[#121212] via-transparent to-transparent opacity-80 pointer-events-none"></div>
+                <div className="absolute bottom-6 left-6 right-6 z-30 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none">
+                  <div className="text-xs uppercase tracking-[0.2em] text-white/70 font-heading mb-1">{event.date}</div>
+                  <div className="text-lg font-display uppercase tracking-wide text-white">{event.title}</div>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </div>
-
+        </motion.div>
       </div>
+
+      {/* Expanded Gallery Modal */}
+      <AnimatePresence>
+        {selectedEvent && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-lg overflow-y-auto"
+            onClick={() => setSelectedEvent(null)}
+            data-lenis-prevent
+          >
+            <div className="fixed top-4 right-4 md:top-6 md:right-6 z-[60]">
+              <button
+                onClick={() => setSelectedEvent(null)}
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-300 bg-black/50 backdrop-blur-md"
+              >
+                <X size={20} className="md:w-6 md:h-6" />
+              </button>
+            </div>
+
+            <div className="min-h-full w-full flex items-center justify-center p-4 md:p-8 lg:p-12">
+              <motion.div
+                layoutId={`event-card-${selectedEvent.id}`}
+                className="relative w-full max-w-6xl bg-[#121212] border border-white/10 overflow-hidden shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header in Modal */}
+                <div className={`flex flex-col md:flex-row w-full bg-[#0a0a0a] ${(selectedEvent.type === 'gallery' && selectedEvent.images.filter(src => src !== selectedEvent.coverImage).length > 0) ? 'border-b border-white/10' : ''}`}>
+                  {selectedEvent.coverImage && (
+                    <motion.div layoutId={`event-image-${selectedEvent.id}`} className="relative w-full md:w-[50%] lg:w-[50%] shrink-0 flex flex-col justify-center bg-[#050505] overflow-hidden min-h-[300px] md:min-h-full">
+                      {/* Ambient Background */}
+                      <div className="absolute inset-0 z-0 pointer-events-none">
+                        <Image src={selectedEvent.coverImage} alt="" fill className="object-cover blur-3xl opacity-30 scale-125" />
+                        <div className="absolute inset-0 bg-black/40" />
+                      </div>
+                      
+                      {/* Foreground Image */}
+                      <div className="relative z-10 w-full h-full p-6 md:p-8 lg:p-10 flex items-center justify-center">
+                        <Image
+                          src={selectedEvent.coverImage}
+                          alt={selectedEvent.title}
+                          width={0}
+                          height={0}
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          style={{ width: '100%', height: 'auto', maxHeight: '85vh' }}
+                          className="object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.7)] rounded-md"
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+
+                  <div className="relative w-full flex-1 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 }}
+                      className="flex flex-wrap gap-3 items-center text-sm uppercase tracking-[0.2em] text-white/70 font-heading mb-4"
+                    >
+                      <span>{selectedEvent.date}</span>
+                      {(selectedEvent.location || selectedEvent.time) && (
+                        <>
+                          <span className="w-1 h-1 rounded-full bg-white/30" />
+                          <span>{selectedEvent.location} {selectedEvent.time ? `• ${selectedEvent.time}` : ''}</span>
+                        </>
+                      )}
+                    </motion.div>
+                    <motion.h2
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-4xl md:text-5xl lg:text-7xl font-display uppercase tracking-wide text-white leading-[1.1]"
+                    >
+                      {selectedEvent.title}
+                    </motion.h2>
+
+                    {selectedEvent.type === 'upcoming' && selectedEvent.description && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                        className="mt-6 text-white/60 font-sans text-sm md:text-base max-w-2xl leading-relaxed whitespace-pre-wrap"
+                      >
+                        {selectedEvent.description}
+                      </motion.div>
+                    )}
+                    {selectedEvent.type === 'gallery' && selectedEvent.subtitle && (
+                      <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                        className="mt-6 text-white/60 font-sans text-sm md:text-base max-w-2xl leading-relaxed"
+                      >
+                        {selectedEvent.subtitle}
+                      </motion.p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Additional Images Grid */}
+                {selectedEvent.type === 'gallery' && selectedEvent.images.filter(src => src !== selectedEvent.coverImage).length > 0 && (
+                  <div className="p-8">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.6 }}
+                      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+                    >
+                      {selectedEvent.images.filter(src => src !== selectedEvent.coverImage).map((src, idx) => (
+                        <div key={idx} className="relative aspect-square overflow-hidden bg-white/5 border border-white/5">
+                          <Image
+                            src={src}
+                            alt={`${selectedEvent.title} - ${idx + 1}`}
+                            fill
+                            className="object-cover hover:scale-105 transition-transform duration-700"
+                          />
+                        </div>
+                      ))}
+                    </motion.div>
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
