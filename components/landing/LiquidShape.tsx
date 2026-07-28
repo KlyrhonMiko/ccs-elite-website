@@ -9,20 +9,25 @@ function detectGPUTier(): "low" | "high" {
 
   try {
     const canvas = document.createElement("canvas");
+    const glOptions = { powerPreference: "high-performance" };
     const gl =
-      canvas.getContext("webgl2") ||
-      canvas.getContext("webgl") ||
-      canvas.getContext("experimental-webgl");
+      canvas.getContext("webgl2", glOptions) ||
+      canvas.getContext("webgl", glOptions) ||
+      canvas.getContext("experimental-webgl", glOptions);
 
-    if (!gl) return "low";
+    if (!gl) {
+      console.log("[GPU Detect] No WebGL context found.");
+      return "low";
+    }
 
+    let renderer = "unknown";
     const debugInfo = (gl as WebGLRenderingContext).getExtension(
       "WEBGL_debug_renderer_info"
     );
     if (debugInfo) {
-      const renderer = (gl as WebGLRenderingContext)
+      renderer = (gl as WebGLRenderingContext)
         .getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
-        ?.toLowerCase();
+        ?.toLowerCase() || "unknown";
 
       // Known integrated / low-power GPU keywords
       const lowTierKeywords = [
@@ -42,6 +47,7 @@ function detectGPUTier(): "low" | "high" {
       ];
 
       if (renderer && lowTierKeywords.some((kw) => renderer.includes(kw))) {
+        console.log(`[GPU Detect] Detected low-tier GPU by keyword: ${renderer}`);
         return "low";
       }
     }
@@ -50,10 +56,14 @@ function detectGPUTier(): "low" | "high" {
     const maxTextureSize = (gl as WebGLRenderingContext).getParameter(
       (gl as WebGLRenderingContext).MAX_TEXTURE_SIZE
     );
+    
+    console.log(`[GPU Detect] Renderer: ${renderer}, Max Texture Size: ${maxTextureSize}`);
+    
     if (maxTextureSize < 8192) return "low";
 
     return "high";
-  } catch {
+  } catch (err) {
+    console.error("[GPU Detect] Error detecting GPU:", err);
     return "low";
   }
 }

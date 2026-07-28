@@ -3,11 +3,12 @@
 import { useRef, useEffect, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Float } from "@react-three/drei";
+import { EffectComposer, Bloom, Noise } from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
 import * as THREE from "three";
 
-// ─── Optimized 3D Scene ─────────────────────────────────────────────────────
-// Original material look restored. No post-processing needed.
-// Performance gains: reduced geometry, no AA, capped DPR, paused when off-screen.
+// ─── High Quality 3D Scene ─────────────────────────────────────────────────────
+// Utilizing dGPU capabilities: high-res geometry, antialiasing enabled, and higher DPR.
 
 function FluidRings() {
   const { viewport } = useThree();
@@ -30,7 +31,7 @@ function FluidRings() {
     <group ref={groupRef} position={position} scale={scale}>
       <Float speed={1.5} rotationIntensity={1} floatIntensity={1}>
         <mesh position={[0, 0, 0]} rotation={[0, 0, 0]}>
-          <torusGeometry args={[2.5, 0.8, 16, 48]} />
+          <torusGeometry args={[2.5, 0.8, 64, 128]} />
           <meshStandardMaterial
             color="#555555"
             metalness={1}
@@ -45,7 +46,7 @@ function FluidRings() {
           position={[-1, -1.5, 1]}
           rotation={[Math.PI / 2, Math.PI / 4, 0]}
         >
-          <torusGeometry args={[2, 0.7, 16, 48]} />
+          <torusGeometry args={[2, 0.7, 64, 128]} />
           <meshStandardMaterial
             color="#444444"
             metalness={1}
@@ -76,11 +77,11 @@ export default function LiquidShapeThree({
     <Canvas
       camera={{ position: [0, 0, 10], fov: 45 }}
       gl={{
-        antialias: false,
+        antialias: true,
         powerPreference: "high-performance",
         alpha: true,
       }}
-      dpr={[1, 1.5]}
+      dpr={[1, 2]}
       frameloop={isInView ? "always" : "demand"}
     >
       <ambientLight intensity={0.2} />
@@ -90,6 +91,10 @@ export default function LiquidShapeThree({
       <Suspense fallback={null}>
         <Environment preset="studio" />
         <FluidRings />
+        <EffectComposer>
+          <Bloom luminanceThreshold={0.8} mipmapBlur intensity={0.3} />
+          <Noise opacity={0.03} blendFunction={BlendFunction.OVERLAY} />
+        </EffectComposer>
         <ReadyReporter onReady={onReady} />
       </Suspense>
     </Canvas>
