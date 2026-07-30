@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import LiquidShape from "./LiquidShape";
+import SilverSunrise from "./SilverSunrise";
 import { upcomingEvents } from "@/lib/data/events";
 
 export default function HeroSection() {
@@ -15,32 +15,22 @@ export default function HeroSection() {
       
       {/* 3D Immersive Background */}
       <div className="absolute inset-0 z-0">
-        <LiquidShape />
+        <SilverSunrise />
       </div>
 
       {/* Main Content Overlay */}
       <div className="absolute inset-0 z-10 p-6 md:p-12 lg:p-16 flex flex-col justify-between pointer-events-none">
         
-        {/* Top Header */}
+        {/* Top Header - Kept split for logo but main title moved to center */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="flex justify-between items-start pointer-events-auto w-full"
         >
-          {/* Main Title Area */}
-          <div className="flex flex-col">
-            <h1 className="text-[clamp(3rem,8vw,8rem)] font-display font-light tracking-[0.15em] leading-[0.9] uppercase text-white">
-               COMPUTER<br />SOCIETY
-            </h1>
-            <a
-              href="https://www.facebook.com/PLPCOMSOC"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-lg md:text-2xl lg:text-3xl font-heading font-light tracking-[0.2em] text-white/70 mt-2 md:mt-4 flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <span className="font-heading font-medium">@</span> college_of_computer_studies
-            </a>
+          {/* Top Left (empty or small branding) */}
+          <div className="hidden md:flex items-center gap-2">
+            <span className="font-heading font-light tracking-[0.2em] text-white/50 text-sm">PLP</span>
           </div>
           
           {/* Top Right Logo / Text */}
@@ -58,25 +48,63 @@ export default function HeroSection() {
           </div>
           
           {/* Mobile Menu Toggle */}
-          <button className="md:hidden text-white pointer-events-auto" onClick={() => setMenuOpen(!menuOpen)}>
+          <button className="md:hidden text-white pointer-events-auto ml-auto" onClick={() => setMenuOpen(!menuOpen)}>
              <Menu className="w-8 h-8" />
           </button>
         </motion.div>
 
-        {/* Middle Section */}
+        {/* Left Side Navigation (Desktop) */}
+        <motion.div 
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="hidden md:flex flex-col gap-6 absolute left-6 lg:left-12 top-1/2 -translate-y-1/2 z-20 font-heading text-xs tracking-[0.3em] uppercase pointer-events-auto"
+        >
+          <div className="w-[1px] h-16 bg-gradient-to-b from-transparent to-white/20 mb-2 ml-2" />
+          {[
+            { name: "About Us", href: "#about", num: "01" },
+            { name: "Events", href: "#events", num: "02" },
+            { name: "Budget", href: "#budget", num: "03" }
+          ].map((item) => (
+            <a key={item.name} href={item.href} className="group flex items-center gap-4 text-white/50 hover:text-white transition-all duration-500">
+              <span className="text-[9px] font-light opacity-50 group-hover:opacity-100 transition-opacity">/{item.num}</span>
+              <span className="relative overflow-hidden pb-1 whitespace-nowrap">
+                {item.name}
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-white transform -translate-x-[101%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+              </span>
+            </a>
+          ))}
+          <div className="w-[1px] h-16 bg-gradient-to-t from-transparent to-white/20 mt-2 ml-2" />
+        </motion.div>
+
+        {/* Centered Middle Section */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col mt-auto mb-16 md:mb-24 md:max-w-md pointer-events-auto"
+          className="flex flex-col items-center justify-center mt-auto mb-auto pointer-events-auto text-center"
         >
           <div className="text-xl md:text-2xl font-light text-white/80 mb-4 md:mb-6 font-heading tracking-wider">
             \\ 01
           </div>
-          <div className="text-5xl md:text-6xl text-white mb-4 md:mb-6 leading-none tracking-widest font-heading">
+          
+          {/* Main Title Area */}
+          <h1 className="text-[clamp(2.5rem,7vw,8rem)] font-display font-light tracking-[0.15em] leading-[1.1] uppercase text-white mb-2">
+             COMPUTER<br />SOCIETY
+          </h1>
+          <a
+            href="https://www.facebook.com/PLPCOMSOC"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm md:text-lg lg:text-xl font-heading font-light tracking-[0.2em] text-white/70 mb-8 flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
+          >
+            <span className="font-heading font-medium">@</span> college_of_computer_studies
+          </a>
+
+          <div className="text-4xl md:text-5xl text-white mb-6 leading-none tracking-widest font-heading">
             ✦ ✦ ✦
           </div>
-          <p className="text-xs md:text-sm text-white/70 leading-relaxed font-sans max-w-[280px] md:max-w-sm">
+          <p className="text-xs md:text-sm text-white/70 leading-relaxed font-sans max-w-[300px] md:max-w-lg text-center mx-auto">
             A premier organization dedicated to fostering innovation, technical excellence, and a collaborative community among students. We provide resources, workshops, and opportunities to build the future of technology together.
           </p>
         </motion.div>
@@ -86,26 +114,22 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex justify-between items-end pointer-events-auto w-full"
+          className="flex justify-center items-end pointer-events-auto w-full mb-12 md:mb-8 relative"
         >
-          {/* Bottom Left Links/Stats */}
-          <div className="flex flex-col gap-3 font-heading text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.3em]">
-            <a href="#about" className="flex items-center justify-between w-[260px] text-white/70 hover:text-[#121212] hover:bg-white border border-white/20 transition-all duration-300 group cursor-pointer py-3 px-5">
-              <span className="font-medium">ABOUT US</span>
-              <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-            </a>
-            <a href="#events" className="flex items-center justify-between w-[260px] text-white/70 hover:text-[#121212] hover:bg-white border border-white/20 transition-all duration-300 group cursor-pointer py-3 px-5">
-              <span className="font-medium">UPCOMING EVENTS</span>
-              <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-            </a>
-            <a href="#budget" className="flex items-center justify-between w-[260px] text-white/70 hover:text-[#121212] hover:bg-white border border-white/20 transition-all duration-300 group cursor-pointer py-3 px-5">
-              <span className="font-medium">BUDGET & TRANSPARENCY</span>
-              <ArrowRight className="w-4 h-4 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-            </a>
+          {/* Scroll Down Indicator */}
+          <div className="flex flex-col items-center gap-3 absolute left-1/2 -translate-x-1/2 bottom-0">
+            <span className="font-heading text-[10px] tracking-[0.4em] text-white/40 uppercase">Scroll</span>
+            <div className="w-[1px] h-12 bg-white/10 relative overflow-hidden">
+              <motion.div 
+                className="w-full h-1/2 bg-white/60 absolute top-0 left-0"
+                animate={{ y: ["-100%", "200%"] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+              />
+            </div>
           </div>
 
-          {/* Bottom Right Barcode */}
-          <div className="hidden md:flex flex-col items-center gap-2">
+          {/* Bottom Right Barcode (Absolute positioned to keep it on the right) */}
+          <div className="hidden md:flex flex-col items-center gap-2 absolute right-0 bottom-0">
             <div className="flex h-16 items-end gap-[2px] md:gap-[3px] opacity-100">
               {[3, 1, 4, 2, 1, 5, 2, 1, 3, 2, 4, 1, 2, 3, 1, 2, 4, 1, 2, 5, 1, 3, 2, 4, 2, 1, 3].map((w, i) => (
                 <div key={i} className="bg-white h-full" style={{ width: `${w * 2}px` }} />
