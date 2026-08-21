@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, Suspense, useState, lazy } from "react";
+import { useRef, Suspense, useState } from "react";
 import { useInView, motion } from "framer-motion";
+import dynamic from "next/dynamic";
 
-// ─── Lazily loaded 3D scene ─────────────────────────────────────────────────
-const ThreeScene = lazy(() => import("./SilverSunriseThree"));
+// ─── Lazily loaded 3D scene (Client-only) ──────────────────────────────────
+const ThreeScene = dynamic(() => import("./SilverSunriseThree"), { ssr: false });
 
 // ─── Main Export ────────────────────────────────────────────────────────────
 export default function SilverSunrise() {

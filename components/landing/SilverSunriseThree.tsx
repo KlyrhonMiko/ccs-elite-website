@@ -141,7 +141,7 @@ function SunriseScene({ onReady }: SilverSunriseThreeProps) {
       <ambientLight intensity={0.05} />
       
       {/* Deep space twinkling stars */}
-      <CustomTwinklingStars count={5000} radius={80} />
+      <CustomTwinklingStars count={1000} radius={80} />
 
       {/* The Glowing Silver Atmosphere (Layered Toruses for a soft atmospheric gradient) */}
       <group position={[0, -61.5, 0]}>
@@ -232,7 +232,7 @@ function SunriseScene({ onReady }: SilverSunriseThreeProps) {
           mipmapBlur 
           intensity={1.0} 
         />
-        <Noise opacity={0.05} />
+        {/* <Noise opacity={0.05} /> */}
         <Vignette eskil={false} offset={0.1} darkness={1.1} />
       </EffectComposer>
     </>
