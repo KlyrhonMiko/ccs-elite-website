@@ -2,7 +2,9 @@ import HeroSection from "@/components/landing/HeroSection";
 import AboutSection from "@/components/landing/AboutSection";
 import OfficersSection from "@/components/landing/OfficersSection";
 import EventsSection from "@/components/landing/EventsSection";
+import MembershipSection from "@/components/landing/MembershipSection";
 import BudgetSection from "@/components/landing/BudgetSection";
+import ContactSection from "@/components/landing/ContactSection";
 import SideNav from "@/components/landing/SideNav";
 
 export default function Home() {
@@ -13,7 +15,9 @@ export default function Home() {
       <AboutSection />
       <OfficersSection />
       <EventsSection />
+      <MembershipSection />
       <BudgetSection />
+      <ContactSection />
     </div>
   );
 }

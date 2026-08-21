@@ -8,6 +8,7 @@ const navItems = [
   { id: "02", name: "ABOUT", href: "#about" },
   { id: "03", name: "EVENTS", href: "#events" },
   { id: "04", name: "BUDGET", href: "#budget" },
+  { id: "05", name: "CONTACT", href: "#contact" },
 ];
 
 export default function SideNav() {

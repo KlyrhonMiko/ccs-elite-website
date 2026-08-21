@@ -1,14 +1,51 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
 import { ModalEvent, upcomingEvents, galleryEvents } from "@/lib/data/events";
+import EventCalendar from "./EventCalendar";
 
 export default function EventsSection() {
   const [selectedEvent, setSelectedEvent] = useState<ModalEvent | null>(null);
+  const [selectedDateRange, setSelectedDateRange] = useState<{ start: Date; end: Date } | null>(null);
+
+  const handleSelectRange = useCallback((start: Date | null, end: Date | null) => {
+    setSelectedDateRange(start && end ? { start, end } : null);
+  }, []);
+
+  const filteredUpcomingEvents = upcomingEvents.filter(event => {
+    if (!selectedDateRange) return true;
+    
+    // Parse event date
+    const [monthStr, daysStr] = event.date.split(" ");
+    if (!monthStr || !daysStr) return false;
+    
+    const monthIndex = new Date(`${monthStr} 1, 2000`).getMonth();
+    if (isNaN(monthIndex)) return false;
+
+    const currentYear = new Date().getFullYear();
+    let eventStart = 0;
+    let eventEnd = 0;
+
+    if (daysStr.includes("-")) {
+      const [start, end] = daysStr.split("-").map(Number);
+      eventStart = new Date(currentYear, monthIndex, start).getTime();
+      eventEnd = new Date(currentYear, monthIndex, end).getTime();
+    } else {
+      const day = parseInt(daysStr, 10);
+      eventStart = new Date(currentYear, monthIndex, day).getTime();
+      eventEnd = eventStart;
+    }
+
+    const rangeStart = selectedDateRange.start.getTime();
+    const rangeEnd = selectedDateRange.end.getTime();
+
+    // Check if event overlaps with selected range
+    return eventStart <= rangeEnd && eventEnd >= rangeStart;
+  });
 
   useEffect(() => {
     if (selectedEvent) {
@@ -46,57 +83,78 @@ export default function EventsSection() {
           </p>
         </motion.div>
 
-        {/* Upcoming Events */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col gap-12"
-        >
-          <div className="flex justify-between items-end">
-            <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
-              Upcoming Events
-            </h3>
-            <div className="hidden md:flex gap-2 text-white/40">
-              ✦ ✦ ✦
-            </div>
-          </div>
+        {/* Calendar & Upcoming Events Grid */}
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.5fr] gap-16 lg:gap-24 items-start">
+          
+          {/* Calendar Side */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="sticky top-32"
+          >
+            <EventCalendar onSelectRange={handleSelectRange} />
+          </motion.div>
 
-          <div className="flex flex-col border-t border-white/10">
-            {upcomingEvents.map((event, index) => (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                key={event.id}
-                layoutId={`event-card-${event.id}`}
-                onClick={() => setSelectedEvent(event)}
-                className="group flex flex-col md:flex-row justify-between items-start md:items-center py-8 border-b border-white/10 hover:bg-white/[0.02] transition-colors duration-300 px-4 md:px-8 cursor-pointer"
-              >
-                <div className="flex flex-col md:flex-row gap-4 md:gap-16 items-start md:items-center mb-4 md:mb-0">
-                  <div className="text-2xl md:text-3xl font-display uppercase tracking-[0.1em] text-white/40 group-hover:text-white transition-colors duration-300 w-32">
-                    {event.date}
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <div className="text-xl md:text-2xl font-heading font-light tracking-wide text-white group-hover:text-white/90">
-                      {event.title}
+          {/* Upcoming Events */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="flex flex-col gap-12"
+          >
+            <div className="flex justify-between items-end">
+              <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
+                Upcoming Events
+              </h3>
+              <div className="hidden md:flex gap-2 text-white/40">
+                ✦ ✦ ✦
+              </div>
+            </div>
+
+            <div className="flex flex-col border-t border-white/10">
+              {filteredUpcomingEvents.length > 0 ? (
+                filteredUpcomingEvents.map((event, index) => (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    key={event.id}
+                    layoutId={`event-card-${event.id}`}
+                    onClick={() => setSelectedEvent(event)}
+                    className="group flex flex-col md:flex-row justify-between items-start md:items-center py-8 border-b border-white/10 hover:bg-white/[0.02] transition-colors duration-300 px-4 md:px-8 cursor-pointer"
+                  >
+                    <div className="flex flex-col md:flex-row gap-4 md:gap-16 items-start md:items-center mb-4 md:mb-0">
+                      <div className="text-2xl md:text-3xl font-display uppercase tracking-[0.1em] text-white/40 group-hover:text-white transition-colors duration-300 w-32">
+                        {event.date}
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <div className="text-xl md:text-2xl font-heading font-light tracking-wide text-white group-hover:text-white/90">
+                          {event.title}
+                        </div>
+                        <div className="text-sm text-white/50 tracking-wider uppercase font-sans">
+                          {event.location} • {event.time}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-sm text-white/50 tracking-wider uppercase font-sans">
-                      {event.location} • {event.time}
+                    <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all duration-300 shrink-0">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 13L13 1M13 1H3.4M13 1V10.6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
                     </div>
-                  </div>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="py-12 text-center text-white/50 font-sans tracking-wide">
+                  No upcoming events for the selected dates.
                 </div>
-                <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all duration-300 shrink-0">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 13L13 1M13 1H3.4M13 1V10.6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+              )}
+            </div>
+          </motion.div>
+        </div>
 
         {/* Event Gallery */}
         <motion.div 

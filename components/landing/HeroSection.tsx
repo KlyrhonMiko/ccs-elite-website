@@ -62,9 +62,11 @@ export default function HeroSection() {
         >
           <div className="w-[1px] h-16 bg-gradient-to-b from-transparent to-white/20 mb-2 ml-2" />
           {[
-            { name: "About Us", href: "#about", num: "01" },
-            { name: "Events", href: "#events", num: "02" },
-            { name: "Budget", href: "#budget", num: "03" }
+            { name: "Home", href: "#home", num: "01" },
+            { name: "About", href: "#about", num: "02" },
+            { name: "Events", href: "#events", num: "03" },
+            { name: "Budget", href: "#budget", num: "04" },
+            { name: "Contact", href: "#contact", num: "05" }
           ].map((item) => (
             <a key={item.name} href={item.href} className="group flex items-center gap-4 text-white/50 hover:text-white transition-all duration-500">
               <span className="text-[9px] font-light opacity-50 group-hover:opacity-100 transition-opacity">/{item.num}</span>
@@ -155,9 +157,11 @@ export default function HeroSection() {
             <X className="w-8 h-8" />
           </button>
           {[
-            { name: "About Us", href: "#about" },
-            { name: "Upcoming Events", href: "#events" },
-            { name: "Budget", href: "#budget" }
+            { name: "Home", href: "#home" },
+            { name: "About", href: "#about" },
+            { name: "Events", href: "#events" },
+            { name: "Budget", href: "#budget" },
+            { name: "Contact", href: "#contact" }
           ].map((item) => (
             <a
               key={item.name}
