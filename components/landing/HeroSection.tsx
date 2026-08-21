@@ -11,7 +11,7 @@ export default function HeroSection() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div id="home" className="bg-[#121212] min-h-screen w-full relative overflow-hidden font-sans text-white flex flex-col">
+    <div id="home" className="bg-[#121212] h-[100dvh] w-full relative overflow-hidden font-sans text-white flex flex-col">
       
       {/* 3D Immersive Background */}
       <div className="absolute inset-0 z-0">
@@ -19,7 +19,7 @@ export default function HeroSection() {
       </div>
 
       {/* Main Content Overlay */}
-      <div className="absolute inset-0 z-10 p-6 md:p-12 lg:p-16 flex flex-col justify-between pointer-events-none">
+      <div className="relative z-10 flex-1 p-6 md:p-8 lg:p-12 flex flex-col justify-between pointer-events-none w-full min-h-0">
         
         {/* Top Header - Kept split for logo but main title moved to center */}
         <motion.div 
@@ -82,26 +82,26 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center justify-center mt-auto mb-auto pointer-events-auto text-center"
+          className="flex flex-col items-center justify-center mt-auto mb-auto pointer-events-auto text-center py-4"
         >
-          <div className="text-xl md:text-2xl font-light text-white/80 mb-4 md:mb-6 font-heading tracking-wider">
+          <div className="text-xl md:text-2xl font-light text-white/80 mb-2 md:mb-4 font-heading tracking-wider">
             \\ 01
           </div>
           
           {/* Main Title Area */}
-          <h1 className="text-[clamp(2.5rem,7vw,8rem)] font-display font-light tracking-[0.15em] leading-[1.1] uppercase text-white mb-2">
+          <h1 className="text-[clamp(2.2rem,6vw,7rem)] font-display font-light tracking-[0.15em] leading-[1.1] uppercase text-white mb-2">
              COMPUTER<br />SOCIETY
           </h1>
           <a
             href="https://www.facebook.com/PLPCOMSOC"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm md:text-lg lg:text-xl font-heading font-light tracking-[0.2em] text-white/70 mb-8 flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
+            className="text-sm md:text-lg lg:text-xl font-heading font-light tracking-[0.2em] text-white/70 mb-4 flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
           >
             <span className="font-heading font-medium">@</span> college_of_computer_studies
           </a>
 
-          <div className="text-4xl md:text-5xl text-white mb-6 leading-none tracking-widest font-heading">
+          <div className="text-3xl md:text-4xl text-white mb-4 leading-none tracking-widest font-heading">
             ✦ ✦ ✦
           </div>
           <p className="text-xs md:text-sm text-white/70 leading-relaxed font-sans max-w-[300px] md:max-w-lg text-center mx-auto">
@@ -114,12 +114,12 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex justify-center items-end pointer-events-auto w-full mb-12 md:mb-8 relative"
+          className="flex justify-center items-end pointer-events-auto w-full relative min-h-[90px]"
         >
           {/* Scroll Down Indicator */}
-          <div className="flex flex-col items-center gap-3 absolute left-1/2 -translate-x-1/2 bottom-0">
+          <div className="flex flex-col items-center gap-3">
             <span className="font-heading text-[10px] tracking-[0.4em] text-white/40 uppercase">Scroll</span>
-            <div className="w-[1px] h-12 bg-white/10 relative overflow-hidden">
+            <div className="w-[1px] h-6 bg-white/10 relative overflow-hidden">
               <motion.div 
                 className="w-full h-1/2 bg-white/60 absolute top-0 left-0"
                 animate={{ y: ["-100%", "200%"] }}
@@ -130,7 +130,7 @@ export default function HeroSection() {
 
           {/* Bottom Right Barcode (Absolute positioned to keep it on the right) */}
           <div className="hidden md:flex flex-col items-center gap-2 absolute right-0 bottom-0">
-            <div className="flex h-16 items-end gap-[2px] md:gap-[3px] opacity-100">
+            <div className="flex h-12 md:h-14 items-end gap-[2px] md:gap-[3px] opacity-100">
               {[3, 1, 4, 2, 1, 5, 2, 1, 3, 2, 4, 1, 2, 3, 1, 2, 4, 1, 2, 5, 1, 3, 2, 4, 2, 1, 3].map((w, i) => (
                 <div key={i} className="bg-white h-full" style={{ width: `${w * 2}px` }} />
               ))}
@@ -173,7 +173,7 @@ export default function HeroSection() {
 
       {/* Latest Event Marquee */}
       {upcomingEvents.length > 0 && (
-        <div className="absolute bottom-0 left-0 w-full z-20 border-t border-white/10 bg-[#121212]/80 backdrop-blur-md overflow-hidden flex items-center py-2 md:py-3 pointer-events-auto group">
+        <div className="relative w-full z-20 border-t border-white/10 bg-[#121212]/80 backdrop-blur-md overflow-hidden flex items-center py-2 md:py-3 pointer-events-auto group mt-auto">
           <a href="#events" className="flex whitespace-nowrap items-center text-xs md:text-sm font-heading tracking-[0.2em] uppercase text-white/70 group-hover:text-white transition-colors w-max hover:cursor-pointer">
             <motion.div
               animate={{ x: ["0%", "-50%"] }}
