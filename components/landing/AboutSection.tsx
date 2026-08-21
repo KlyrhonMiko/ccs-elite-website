@@ -4,12 +4,6 @@ import { motion } from "framer-motion";
 
 // About Section component for rendering organizational details.
 
-const executiveTeam = [
-  { role: "President", name: "John Doe" },
-  { role: "Vice President", name: "Jane Smith" },
-  { role: "Secretary", name: "Alice Johnson" },
-  { role: "Treasurer", name: "Bob Williams" },
-];
 
 const coreValues = [
   "Innovation",
@@ -109,42 +103,6 @@ export default function AboutSection() {
           </div>
         </motion.div>
 
-        {/* Executive Team */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col gap-12"
-        >
-          <div className="flex justify-between items-end">
-            <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
-              Executive Team
-            </h3>
-            <div className="hidden md:flex gap-2 text-white/40">
-              ✦ ✦ ✦
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {executiveTeam.map((member, index) => (
-              <motion.div 
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-col gap-3 p-6 border border-white/10 hover:border-white/30 transition-colors bg-white/[0.02]"
-              >
-                <div className="text-xs uppercase tracking-[0.3em] text-white/50 font-heading font-bold">
-                  {member.role}
-                </div>
-                <div className="text-xl font-display uppercase tracking-[0.1em] text-white">
-                  {member.name}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
 
       </div>
     </section>
