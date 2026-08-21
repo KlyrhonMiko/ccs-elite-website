@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Stars, Sphere, Plane, Float, BakeShadows, ContactShadows, Line } from "@react-three/drei";
+import { Sphere, BakeShadows } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette, Noise } from "@react-three/postprocessing";
 import { useRef, useEffect, Suspense, useMemo } from "react";
 import * as THREE from "three";
@@ -11,30 +11,40 @@ interface SilverSunriseThreeProps {
   onReady?: () => void;
 }
 
+function generateStarData(count: number, radius: number) {
+  const positions = new Float32Array(count * 3);
+  const phases = new Float32Array(count);
+  const sizes = new Float32Array(count);
+  let seed = 1234567;
+  const pseudoRandom = () => {
+    seed = (seed * 16807) % 2147483647;
+    return (seed - 1) / 2147483646;
+  };
+
+  for (let i = 0; i < count; i++) {
+    // Spherical distribution
+    const r = radius * Math.cbrt(pseudoRandom());
+    const theta = 2 * Math.PI * pseudoRandom();
+    const phi = Math.acos(2 * pseudoRandom() - 1);
+
+    positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    positions[i * 3 + 2] = r * Math.cos(phi);
+
+    // Random phase 0 to 2PI
+    phases[i] = pseudoRandom() * Math.PI * 2;
+
+    // Random size factor
+    sizes[i] = pseudoRandom() * 2.0 + 0.5;
+  }
+  return [positions, phases, sizes] as const;
+}
+
 function CustomTwinklingStars({ count = 5000, radius = 50 }) {
   const pointsRef = useRef<THREE.Points>(null);
-  
+
   const [positions, phases, sizes] = useMemo(() => {
-    const positions = new Float32Array(count * 3);
-    const phases = new Float32Array(count);
-    const sizes = new Float32Array(count);
-    for (let i = 0; i < count; i++) {
-      // Spherical distribution
-      const r = radius * Math.cbrt(Math.random());
-      const theta = 2 * Math.PI * Math.random();
-      const phi = Math.acos(2 * Math.random() - 1);
-      
-      positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-      positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      positions[i * 3 + 2] = r * Math.cos(phi);
-      
-      // Random phase 0 to 2PI
-      phases[i] = Math.random() * Math.PI * 2;
-      
-      // Random size factor
-      sizes[i] = Math.random() * 2.0 + 0.5;
-    }
-    return [positions, phases, sizes];
+    return generateStarData(count, radius);
   }, [count, radius]);
 
   useFrame((state) => {
@@ -46,9 +56,9 @@ function CustomTwinklingStars({ count = 5000, radius = 50 }) {
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
-        <bufferAttribute attach="attributes-phase" count={count} array={phases} itemSize={1} />
-        <bufferAttribute attach="attributes-size" count={count} array={sizes} itemSize={1} />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+        <bufferAttribute attach="attributes-phase" args={[phases, 1]} />
+        <bufferAttribute attach="attributes-size" args={[sizes, 1]} />
       </bufferGeometry>
       <shaderMaterial
         transparent
@@ -116,17 +126,13 @@ function CustomTwinklingStars({ count = 5000, radius = 50 }) {
   );
 }
 
-function SunriseScene({ isInView, onReady }: SilverSunriseThreeProps) {
+function SunriseScene({ onReady }: SilverSunriseThreeProps) {
   // Notify parent when mounted
   useEffect(() => {
     if (onReady) {
       onReady();
     }
   }, [onReady]);
-
-  useFrame((state) => {
-    if (!isInView) return;
-  });
 
   return (
     <>
@@ -220,7 +226,7 @@ function SunriseScene({ isInView, onReady }: SilverSunriseThreeProps) {
         <meshBasicMaterial color="#000000" />
       </Sphere>
       
-      <EffectComposer disableNormalPass>
+      <EffectComposer enableNormalPass={false}>
         <Bloom 
           luminanceThreshold={0.4} 
           mipmapBlur 

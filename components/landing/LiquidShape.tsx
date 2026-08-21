@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, Suspense, useState, useEffect, useMemo, lazy } from "react";
+import { useRef, Suspense, useState, lazy } from "react";
 import { useInView, motion } from "framer-motion";
 
 // ─── GPU Capability Detection ───────────────────────────────────────────────
@@ -181,12 +181,10 @@ export default function LiquidShape() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { margin: "200px" });
   const [isReady, setIsReady] = useState(false);
-  const [gpuTier, setGpuTier] = useState<"low" | "high" | null>(null);
-
-  useEffect(() => {
-    // Detect on mount, in the browser
-    setGpuTier(detectGPUTier());
-  }, []);
+  const [gpuTier] = useState<"low" | "high" | null>(() => {
+    if (typeof window === "undefined") return null;
+    return detectGPUTier();
+  });
 
   // Don't render anything until we know the GPU tier
   if (gpuTier === null) {
