@@ -94,7 +94,7 @@ export default function AboutSection() {
                 <div className="text-3xl md:text-4xl text-white/20 group-hover:text-white transition-colors duration-500 font-heading font-light">
                   0{index + 1}
                 </div>
-                <div className="text-lg md:text-xl font-display uppercase tracking-[0.15em] text-white/80 group-hover:text-white transition-colors duration-300">
+                <div className="text-[10px] min-[360px]:text-xs sm:text-sm md:text-xl font-display uppercase tracking-widest md:tracking-[0.15em] text-white/80 group-hover:text-white transition-colors duration-300 break-words hyphens-auto">
                   {value}
                 </div>
                 <div className="w-full h-[1px] bg-white/10 group-hover:bg-white/50 transition-colors duration-500"></div>

@@ -5,7 +5,7 @@ import { Mail, User } from "lucide-react";
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="bg-[#121212] w-full relative overflow-hidden font-sans text-white py-24 px-6 md:px-12 lg:px-16 border-t border-white/10">
+    <section id="contact" className="bg-[#121212] w-full relative overflow-hidden font-sans text-white pt-24 pb-36 md:py-24 px-6 md:px-12 lg:px-16 border-t border-white/10">
       <div className="max-w-7xl mx-auto flex flex-col gap-24">
         
         {/* Section Header */}
@@ -18,7 +18,7 @@ export default function ContactSection() {
         >
           <div>
             <div className="text-xl md:text-2xl font-light text-white/80 mb-4 font-heading tracking-wider">
-              \\ 06
+              \\ 07
             </div>
             <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-display font-light tracking-[0.15em] leading-[1] uppercase text-white">
               Contact &<br />Connect
@@ -44,7 +44,7 @@ export default function ContactSection() {
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80 group-hover:bg-emerald-400 transition-colors shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
               Official Email
             </div>
-            <a href="mailto:ccselite@university.edu.ph" className="text-2xl md:text-4xl lg:text-5xl font-display uppercase tracking-wider text-white group-hover:text-white/90 transition-colors">
+            <a href="mailto:ccselite@university.edu.ph" className="text-[clamp(1rem,5vw,2.25rem)] md:text-4xl lg:text-5xl font-display uppercase tracking-wider text-white group-hover:text-white/90 transition-colors break-all">
               ccselite@university.edu.ph
             </a>
             <div className="hidden md:flex justify-end w-24 lg:w-32">

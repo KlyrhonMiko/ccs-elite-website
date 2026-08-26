@@ -72,7 +72,7 @@ export default function EventsSection() {
         >
           <div>
             <div className="text-xl md:text-2xl font-light text-white/80 mb-4 font-heading tracking-wider">
-              \\ 03
+              \\ 04
             </div>
             <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-display font-light tracking-[0.15em] leading-[1] uppercase text-white">
               Events &<br />Gallery
@@ -84,7 +84,7 @@ export default function EventsSection() {
         </motion.div>
 
         {/* Calendar & Upcoming Events Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.5fr] gap-16 lg:gap-24 items-start">
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.5fr] gap-12 lg:gap-16 xl:gap-24 items-start">
           
           {/* Calendar Side */}
           <motion.div
@@ -92,7 +92,7 @@ export default function EventsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="sticky top-32"
+            className="xl:sticky xl:top-32 relative z-20"
           >
             <EventCalendar onSelectRange={handleSelectRange} />
           </motion.div>
@@ -103,7 +103,7 @@ export default function EventsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="flex flex-col gap-12"
+            className="flex flex-col gap-8 md:gap-12"
           >
             <div className="flex justify-between items-end">
               <h3 className="text-2xl md:text-3xl font-heading font-light tracking-[0.2em] uppercase text-white/90">
@@ -125,23 +125,23 @@ export default function EventsSection() {
                     key={event.id}
                     layoutId={`event-card-${event.id}`}
                     onClick={() => setSelectedEvent(event)}
-                    className="group flex flex-col md:flex-row justify-between items-start md:items-center py-8 border-b border-white/10 hover:bg-white/[0.02] transition-colors duration-300 px-4 md:px-8 cursor-pointer"
+                    className="group flex flex-row justify-between items-center py-6 md:py-8 border-b border-white/10 hover:bg-white/[0.02] transition-colors duration-300 px-2 md:px-8 cursor-pointer gap-4"
                   >
-                    <div className="flex flex-col md:flex-row gap-4 md:gap-16 items-start md:items-center mb-4 md:mb-0">
-                      <div className="text-2xl md:text-3xl font-display uppercase tracking-[0.1em] text-white/40 group-hover:text-white transition-colors duration-300 w-32">
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-16 items-start md:items-center flex-1">
+                      <div className="text-xl md:text-3xl font-display uppercase tracking-[0.1em] text-white/40 group-hover:text-white transition-colors duration-300 md:w-32">
                         {event.date}
                       </div>
                       <div className="flex flex-col gap-1">
-                        <div className="text-xl md:text-2xl font-heading font-light tracking-wide text-white group-hover:text-white/90">
+                        <div className="text-lg md:text-2xl font-heading font-light tracking-wide text-white group-hover:text-white/90">
                           {event.title}
                         </div>
-                        <div className="text-sm text-white/50 tracking-wider uppercase font-sans">
+                        <div className="text-xs md:text-sm text-white/50 tracking-wider uppercase font-sans">
                           {event.location} • {event.time}
                         </div>
                       </div>
                     </div>
-                    <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all duration-300 shrink-0">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white group-hover:bg-white group-hover:text-black transition-all duration-300 shrink-0">
+                      <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 md:w-3.5 md:h-3.5">
                         <path d="M1 13L13 1M13 1H3.4M13 1V10.6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>

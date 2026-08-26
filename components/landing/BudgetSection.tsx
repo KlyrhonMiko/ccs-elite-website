@@ -92,9 +92,9 @@ export default function BudgetSection() {
         >
           <div>
             <div className="text-xl md:text-2xl font-light text-white/80 mb-4 font-heading tracking-wider">
-              \\ 05
+              \\ 06
             </div>
-            <h2 className="text-[clamp(2.5rem,6vw,5rem)] font-display font-light tracking-[0.15em] leading-[1] uppercase text-white">
+            <h2 className="text-[clamp(1.75rem,8vw,5rem)] md:text-[clamp(2.5rem,6vw,5rem)] font-display font-light tracking-[0.1em] md:tracking-[0.15em] leading-[1] uppercase text-white">
               Budget &<br />Transparency
             </h2>
           </div>

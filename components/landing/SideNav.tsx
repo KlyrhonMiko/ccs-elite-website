@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 const navItems = [
   { id: "01", name: "HOME", href: "#home" },
   { id: "02", name: "ABOUT", href: "#about" },
-  { id: "03", name: "EVENTS", href: "#events" },
-  { id: "04", name: "BUDGET", href: "#budget" },
-  { id: "05", name: "CONTACT", href: "#contact" },
+  { id: "03", name: "OFFICERS", href: "#officers" },
+  { id: "04", name: "EVENTS", href: "#events" },
+  { id: "05", name: "BUDGET", href: "#budget" },
+  { id: "06", name: "CONTACT", href: "#contact" },
 ];
 
 export default function SideNav() {
@@ -52,11 +53,11 @@ export default function SideNav() {
     <AnimatePresence>
       {isScrolled && (
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 20 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="fixed right-6 md:right-10 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-6 pointer-events-none"
+          className="fixed bottom-6 md:bottom-auto top-auto md:top-1/2 left-1/2 md:left-auto -translate-x-1/2 md:translate-x-0 md:right-10 translate-y-0 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-2 md:gap-6 pointer-events-none"
         >
           {navItems.map((item) => {
             const isActive = activeSection === item.href.substring(1);
@@ -66,19 +67,19 @@ export default function SideNav() {
                 href={item.href}
                 className="group pointer-events-auto flex items-center justify-end gap-4"
               >
-                {/* Text that slides in on hover */}
-                <div className="flex flex-col items-end opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                {/* Text that slides in on hover (Desktop only) */}
+                <div className="hidden md:flex flex-col items-end opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
                   <span className="text-[9px] font-heading tracking-[0.4em] text-white/40 uppercase">sec // {item.id}</span>
                   <span className="text-xs font-heading tracking-[0.2em] font-medium text-white">{item.name}</span>
                 </div>
                 
                 {/* The Box */}
-                <div className={`w-10 h-10 flex items-center justify-center border transition-all duration-300 backdrop-blur-md ${
+                <div className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center border transition-all duration-300 backdrop-blur-md ${
                   isActive 
                     ? "bg-white border-white text-[#121212]" 
                     : "bg-[#121212]/50 border-white/20 text-white/70 group-hover:bg-white group-hover:border-white group-hover:text-[#121212]"
                 }`}>
-                  <span className="font-heading text-[10px] tracking-widest font-bold">
+                  <span className="font-heading text-[9px] md:text-[10px] tracking-widest font-bold">
                     {item.id}
                   </span>
                 </div>

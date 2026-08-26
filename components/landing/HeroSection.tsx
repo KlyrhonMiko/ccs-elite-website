@@ -64,9 +64,10 @@ export default function HeroSection() {
           {[
             { name: "Home", href: "#home", num: "01" },
             { name: "About", href: "#about", num: "02" },
-            { name: "Events", href: "#events", num: "03" },
-            { name: "Budget", href: "#budget", num: "04" },
-            { name: "Contact", href: "#contact", num: "05" }
+            { name: "Officers", href: "#officers", num: "03" },
+            { name: "Events", href: "#events", num: "04" },
+            { name: "Budget", href: "#budget", num: "05" },
+            { name: "Contact", href: "#contact", num: "06" }
           ].map((item) => (
             <a key={item.name} href={item.href} className="group flex items-center gap-4 text-white/50 hover:text-white transition-all duration-500">
               <span className="text-[9px] font-light opacity-50 group-hover:opacity-100 transition-opacity">/{item.num}</span>
@@ -159,6 +160,7 @@ export default function HeroSection() {
           {[
             { name: "Home", href: "#home" },
             { name: "About", href: "#about" },
+            { name: "Officers", href: "#officers" },
             { name: "Events", href: "#events" },
             { name: "Budget", href: "#budget" },
             { name: "Contact", href: "#contact" }
